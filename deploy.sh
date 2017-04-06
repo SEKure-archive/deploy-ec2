@@ -16,9 +16,9 @@ fi
 systemctl stop nginx
 chown -R root:root .
 chmod -R 0755 html
-mv html /usr/share/nginx/html
-aws s3 cp "s3://${s3bucketName}/nginx-config/nginx.conf" /etc/nginx/nginx.cong
-aws s3 cp "s3://${s3bucketName}/nginx-config/default.conf" /etc/nginx/conf.d/default.cong
+rsync -a html/ /usr/share/nginx/html/
+aws s3 cp "s3://${s3bucketName}/nginx-config/nginx.conf" /etc/nginx/nginx.conf
+aws s3 cp "s3://${s3bucketName}/nginx-config/default.conf" /etc/nginx/conf.d/default.conf
 systemctl start nginx
 aws s3 cp "s3://${s3bucketName}/build.sh" .
 sh build.sh

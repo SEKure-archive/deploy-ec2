@@ -14,12 +14,17 @@ if [ ! -x /usr/sbin/nginx ]; then
     echo "Nfinx already installed"
 fi
 systemctl stop nginx
+echo "Preparing File permissions..."
 useradd --no-create-home nginx
 chown -R root:root .
 chmod -R 0755 html
+
+echo "Installing Files..."
 rsync -a html/ /usr/share/nginx/html/
-aws s3 cp "s3://${s3bucketName}/nginx-config/nginx.conf" /etc/nginx/nginx.conf
-aws s3 cp "s3://${s3bucketName}/nginx-config/default.conf" /etc/nginx/conf.d/default.conf
+aws s3 cp "s3://${s3bucketName}/default.conf" /etc/nginx/conf.d/default.conf
 systemctl start nginx
-aws s3 cp "s3://${s3bucketName}/build.sh" .
+echo "Starting Nginx Sever..."
+
+
+echo "Building API..."
 sh build.sh

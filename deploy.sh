@@ -14,6 +14,7 @@ if [ ! -x /usr/sbin/nginx ]; then
     echo "Nfinx already installed"
 fi
 systemctl stop nginx
+useradd --no-create-home nginx
 chown -R root:root .
 chmod -R 0755 html
 rsync -a html/ /usr/share/nginx/html/

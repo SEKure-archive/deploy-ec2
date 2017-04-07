@@ -174,6 +174,7 @@ var JWT_KEY = 'session';
 var UserService = (function () {
     function UserService(cookie) {
         this.cookie = cookie;
+        this.domainName = 'sekurearchive.us';
         this.cookieExpires = 1; //Expire in an hour
         this.cookieHTTPS = true; // Needs to be true for https
         this.username = null;
@@ -185,7 +186,7 @@ var UserService = (function () {
         var value = 'jwt';
         var opts = {
             path: './services/user',
-            domain: 'localhost',
+            domain: this.domainName,
             expires: date,
             secure: this.cookieHTTPS,
         };

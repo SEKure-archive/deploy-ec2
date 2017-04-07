@@ -49,7 +49,7 @@ var APIService = (function () {
         this.user = user;
         // private URL = 'http://172.17.0.2:80';
         // private URL = 'http://52.2.133.118:80';
-        this.URL = 'http://api.sekurearchive.us';
+        this.URL = 'https://api.sekurearchive.us';
         this.timeOut = 10000;
         console.log('Postservice initialized...');
     }

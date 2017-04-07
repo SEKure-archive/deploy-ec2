@@ -190,15 +190,15 @@ var UserService = (function () {
             secure: this.cookieHTTPS,
         };
         this.username = username;
-        // this.cookie.put(JWT_KEY, jwt, opts);
-        localStorage.setItem(JWT_KEY, jwt);
+        this.cookie.put(JWT_KEY, jwt, opts);
+        // localStorage.setItem(JWT_KEY, jwt);
         localStorage.setItem('username', username);
     };
     /** Unsets the current user and clears authentication information. */
     UserService.prototype.unsetUser = function () {
         this.username = null;
-        // this.cookie.remove(JWT_KEY);
-        localStorage.removeItem(JWT_KEY);
+        this.cookie.remove(JWT_KEY);
+        // localStorage.removeItem(JWT_KEY);
         localStorage.removeItem('username');
     };
     /** Returns the username of the currently logged in user, if any. */
@@ -210,8 +210,8 @@ var UserService = (function () {
     };
     /** Returns the JWT of the currently logged in user, if any. */
     UserService.prototype.getToken = function () {
-        return localStorage.getItem(JWT_KEY);
-        // return this.cookie.get(JWT_KEY);
+        // return localStorage.getItem(JWT_KEY);
+        return this.cookie.get(JWT_KEY);
     };
     UserService.prototype.setSessionExpired = function () {
         localStorage.setItem('expired', 'true');
@@ -917,7 +917,7 @@ exports = module.exports = __webpack_require__(62)();
 
 
 // module
-exports.push([module.i, ".contents {\n    border-top: 1px solid #E3E3E3;\n    margin-left: 44px;\n    padding: 10px 0;\n    text-align: left;\n}\n\n.contents > p {\n    margin: 0;\n}\n\n.file {\n    background-color: #F9F9F9;\n    border-top: 1px solid #E3E3E3;\n    margin: 0;\n    padding: 0;\n}\n\n.file-even {\n    background-color: white;\n}\n\n.header {\n    height: 36px;\n    cursor: pointer;\n    font-size: 16px;\n    list-style-type: none;\n    line-height: 36px;\n    margin: 0;\n    padding: 0;\n    text-align: left;\n}\n\n.header > li {\n    display: inline-block;\n}\n\n.header > * > .glyphicon {\n    font-size: 16px;\n}\n\n.header > * > .glyphicon-chevron-down {\n    margin: 8px 4px 0 16px;\n}\n\n.header > * > .glyphicon-chevron-right {\n    margin: 8px 10px;\n}\n", ""]);
+exports.push([module.i, ".contents {\n    border-top: 1px solid #E3E3E3;\n    margin-left: 44px;\n    padding: 10px 0;\n    text-align: left;\n}\n\n.contents > p {\n    margin: 0;\n}\n\n.file {\n    background-color: #F9F9F9;\n    border-top: 1px solid #E3E3E3;\n    margin: 0;\n    padding: 0;\n}\n\n.file-even {\n    background-color: white;\n}\n\n.header {\n    height: 36px;\n    cursor: pointer;\n    font-size: 16px;\n    list-style-type: none;\n    line-height: 36px;\n    margin: 0;\n    padding: 0;\n    text-align: left;\n}\n\n.header > li {\n    display: inline-block;\n}\n\n.header > * > .glyphicon {\n    font-size: 16px;\n}\n\n.header > * > .glyphicon-chevron-down {\n    margin: 8px 4px 0 16px;\n}\n\n.header > * > .glyphicon-chevron-right {\n    margin: 8px 10px;\n}\n\n.nav > button {\n    margin: 8px 8px 0 0;\n}\n\n.click {\n    cursor: pointer;\n}\n", ""]);
 
 // exports
 
@@ -1009,7 +1009,7 @@ module.exports = "<router-outlet></router-outlet>\n"
 /***/ 698:
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"file\" [class.file-even]=\"even\">\n  <ul class=\"header\" (click)=\"toggleOpen()\">\n    <li><div *ngIf=\"open\" class=\"glyphicon glyphicon-chevron-down\"></div></li>\n    <li><div *ngIf=\"!open\" class=\"glyphicon glyphicon-chevron-right\"></div></li>\n    <li><p>{{file.name}}</p></li>\n  </ul>\n  <div *ngIf=\"open\" class=\"contents\">\n  <button type=\"submit\" class=\"btn btn-default btn-danger\" (click)=\"restoreFile()\">Restore</button>\n    <p>Mime: {{file.mime}}</p>\n    <p>Size: {{file.size | bytes}}</p>\n  </div>\n</div>\n"
+module.exports = "<div class=\"file\" [class.file-even]=\"even\">\n  <ul class=\"header\" (click)=\"toggleOpen()\">\n    <li><div *ngIf=\"open\" class=\"glyphicon glyphicon-chevron-down\"></div></li>\n    <li><div *ngIf=\"!open\" class=\"glyphicon glyphicon-chevron-right\"></div></li>\n    <li><p>{{file.name}}</p></li>\n  </ul>\n  <div *ngIf=\"open\" class=\"contents\">\n  <button type=\"submit\" class=\"btn btn-default btn-danger\"  (click)=\"restoreFile()\">Restore</button>\n    <p>Mime: {{file.mime}}</p>\n    <p>Size: {{file.size | bytes}}</p>\n  </div>\n</div>\n"
 
 /***/ }),
 

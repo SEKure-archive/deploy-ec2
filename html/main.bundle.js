@@ -175,7 +175,7 @@ var UserService = (function () {
     function UserService(cookie) {
         this.cookie = cookie;
         this.cookieExpires = 1; //Expire in an hour
-        this.cookieHTTPS = false; // Needs to be true for https
+        this.cookieHTTPS = true; // Needs to be true for https
         this.username = null;
     }
     UserService.prototype.setUser = function (username, jwt) {

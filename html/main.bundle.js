@@ -197,13 +197,14 @@ var UserService = (function () {
     };
     /** Unsets the current user and clears authentication information. */
     UserService.prototype.unsetUser = function () {
-        // let opts: CookieOptionsArgs = {
+        // let opt: CookieOptionsArgs = {
         //   path: './services/user',
         //   domain: this.domainName,
         //   secure: this.cookieHTTPS,
         // };
         this.username = null;
-        this.cookie.remove(JWT_KEY);
+        this.cookie.removeAll();
+        // this.cookie.remove(JWT_KEY, opt);
         // localStorage.removeItem(JWT_KEY);
         localStorage.removeItem('username');
     };

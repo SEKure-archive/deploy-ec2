@@ -191,21 +191,27 @@ var UserService = (function () {
             secure: this.cookieHTTPS,
         };
         this.username = username;
-        this.cookie.put(JWT_KEY, jwt, opts);
-        // localStorage.setItem(JWT_KEY, jwt);
+        // this.cookie.put(JWT_KEY, jwt, opts);
+        localStorage.setItem(JWT_KEY, jwt);
         localStorage.setItem('username', username);
     };
     /** Unsets the current user and clears authentication information. */
     UserService.prototype.unsetUser = function () {
+        // var temp = new Date().getTime() + this.cookieExpires * 3600 * 1000;  //hour is 3600
+        // var date = new Date(temp);
+        // let key = 'testCookieKey';
+        // let value = 'jwt';
+        //
         // let opt: CookieOptionsArgs = {
         //   path: './services/user',
         //   domain: this.domainName,
+        //   expires: date,
         //   secure: this.cookieHTTPS,
         // };
         this.username = null;
-        this.cookie.removeAll();
-        // this.cookie.remove(JWT_KEY, opt);
-        // localStorage.removeItem(JWT_KEY);
+        // this.cookie.removeAll();
+        // this.cookie.remove(JWT_KEY);
+        localStorage.removeItem(JWT_KEY);
         localStorage.removeItem('username');
     };
     /** Returns the username of the currently logged in user, if any. */
@@ -217,8 +223,8 @@ var UserService = (function () {
     };
     /** Returns the JWT of the currently logged in user, if any. */
     UserService.prototype.getToken = function () {
-        // return localStorage.getItem(JWT_KEY);
-        return this.cookie.get(JWT_KEY);
+        return localStorage.getItem(JWT_KEY);
+        // return this.cookie.get(JWT_KEY);
     };
     UserService.prototype.setSessionExpired = function () {
         localStorage.setItem('expired', 'true');

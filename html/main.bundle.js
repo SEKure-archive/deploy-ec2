@@ -197,6 +197,11 @@ var UserService = (function () {
     };
     /** Unsets the current user and clears authentication information. */
     UserService.prototype.unsetUser = function () {
+        // let opts: CookieOptionsArgs = {
+        //   path: './services/user',
+        //   domain: this.domainName,
+        //   secure: this.cookieHTTPS,
+        // };
         this.username = null;
         this.cookie.remove(JWT_KEY);
         // localStorage.removeItem(JWT_KEY);
@@ -311,7 +316,8 @@ var Home = (function () {
             }
         });
     };
-    Home.prototype.logout = function () {
+    Home.prototype.logout = function (e) {
+        e.preventDefault();
         this.user.unsetUser();
         this.router.navigate(['login']);
     };
@@ -383,7 +389,8 @@ var Login = (function () {
         this.usernameError = null;
         this.passwordError = null;
     };
-    Login.prototype.submitForm = function () {
+    Login.prototype.submitForm = function (e) {
+        e.preventDefault();
         // If an API call is in progress, ignore the button press.
         if (this.working)
             return;
@@ -674,7 +681,8 @@ var FileComponent = (function () {
     FileComponent.prototype.toggleOpen = function () {
         this.open = !this.open;
     };
-    FileComponent.prototype.restoreFile = function () {
+    FileComponent.prototype.restoreFile = function (e) {
+        e.preventDefault();
         console.log("File info");
         console.log(this.file.id);
         console.log(this.file.name);
@@ -1010,7 +1018,7 @@ module.exports = "<router-outlet></router-outlet>\n"
 /***/ 698:
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"file\" [class.file-even]=\"even\">\n  <ul class=\"header\" (click)=\"toggleOpen()\">\n    <li><div *ngIf=\"open\" class=\"glyphicon glyphicon-chevron-down\"></div></li>\n    <li><div *ngIf=\"!open\" class=\"glyphicon glyphicon-chevron-right\"></div></li>\n    <li><p>{{file.name}}</p></li>\n  </ul>\n  <div *ngIf=\"open\" class=\"contents\">\n  <button type=\"submit\" class=\"btn btn-default btn-danger\"  (click)=\"restoreFile()\">Restore</button>\n    <p>Mime: {{file.mime}}</p>\n    <p>Size: {{file.size | bytes}}</p>\n  </div>\n</div>\n"
+module.exports = "<div class=\"file\" [class.file-even]=\"even\">\n  <ul class=\"header\" (click)=\"toggleOpen()\">\n    <li><div *ngIf=\"open\" class=\"glyphicon glyphicon-chevron-down\"></div></li>\n    <li><div *ngIf=\"!open\" class=\"glyphicon glyphicon-chevron-right\"></div></li>\n    <li><p>{{file.name}}</p></li>\n  </ul>\n  <div *ngIf=\"open\" class=\"contents\">\n  <button type=\"submit\" class=\"btn btn-default btn-danger\"  (click)=\"restoreFile($event)\">Restore</button>\n    <p>Mime: {{file.mime}}</p>\n    <p>Size: {{file.size | bytes}}</p>\n  </div>\n</div>\n"
 
 /***/ }),
 
@@ -1031,14 +1039,14 @@ module.exports = "<div [style.width.px]=\"size\" [style.height.px]=\"size\" clas
 /***/ 701:
 /***/ (function(module, exports) {
 
-module.exports = "<nav class=\"navbar navbar-default navbar-fixed\">\n  <div class=\"container-fluid\">\n    <div class=\"navbar-header\">\n      <a class=\"navbar-brand\" [routerLink]=\"['home']\">SEKure Archive</a>\n    </div>\n    <div class=\"nav navbar-right\">\n      <p class=\"navbar-text\">Logged in as: {{username}}</p>\n      <button type=\"submit\" class=\"btn btn-default btn-danger\" (click)=\"logout()\">Logout</button>\n    </div>\n  </div>\n</nav>\n\n<!-- SPINNNER for Loading -->\n<spinner *ngIf=\"working\" [size]=\"96\"></spinner>\n<!-- Container for folder and files -->\n<div class = \"container\">\n  <div class=\"text-center\">\n    <div *ngIf=\"flash.error\" class=\"alert alert-danger\" role=\"alert\" (click)=\"flash.error = null\">\n      <a class=\"close\" data-dismiss=\"alert\" aria-label=\"close\">&times;</a>\n      <b>Error:</b> {{flash.error}}\n    </div>\n    <div *ngIf=\"flash.notification\" class=\"alert alert-info\" role=\"alert\" (click)=\"flash.notification = null\">\n      <a class=\"close\" data-dismiss=\"alert\" aria-label=\"close\">&times;</a>\n      {{flash.notification}}\n    </div>\n    <h3>Folders</h3>\n    <folder *ngFor=\"let folder of folders\" [folder]=\"folder\"></folder>\n  </div>\n</div>\n"
+module.exports = "<nav class=\"navbar navbar-default navbar-fixed\">\n  <div class=\"container-fluid\">\n    <div class=\"navbar-header\">\n      <a class=\"navbar-brand\" [routerLink]=\"['home']\">SEKure Archive</a>\n    </div>\n    <div class=\"nav navbar-right\">\n      <p class=\"navbar-text\">Logged in as: {{username}}</p>\n      <button type=\"submit\" class=\"btn btn-default btn-danger\" (click)=\"logout($event)\">Logout</button>\n    </div>\n  </div>\n</nav>\n\n<!-- SPINNNER for Loading -->\n<spinner *ngIf=\"working\" [size]=\"96\"></spinner>\n<!-- Container for folder and files -->\n<div class = \"container\">\n  <div class=\"text-center\">\n    <div *ngIf=\"flash.error\" class=\"alert alert-danger\" role=\"alert\" (click)=\"flash.error = null\">\n      <a class=\"close\" data-dismiss=\"alert\" aria-label=\"close\">&times;</a>\n      <b>Error:</b> {{flash.error}}\n    </div>\n    <div *ngIf=\"flash.notification\" class=\"alert alert-info\" role=\"alert\" (click)=\"flash.notification = null\">\n      <a class=\"close\" data-dismiss=\"alert\" aria-label=\"close\">&times;</a>\n      {{flash.notification}}\n    </div>\n    <h3>Folders</h3>\n    <folder *ngFor=\"let folder of folders\" [folder]=\"folder\"></folder>\n  </div>\n</div>\n"
 
 /***/ }),
 
 /***/ 702:
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"main\">\n  <div class=\"wrapper\">\n    <div class=\"well\">\n      <spinner *ngIf=\"working\" [size]=\"96\"></spinner>\n      <h2>{{showLogin? \"Login\" : \"Sign Up\"}}</h2>\n      <form role=\"form\">\n        <div class=\"form-group\">\n          <label for=\"username\">Username</label>\n          <input [disabled]=\"working\" type=\"text\" #username class=\"form-control\" id=\"username\" placeholder=\"Username\">\n          <div *ngIf=\"usernameError\" class=\"alert alert-danger\" role=\"alert\"><b>Error:</b> {{usernameError}}</div>\n        </div>\n        <div class=\"form-group\">\n          <label for=\"password\">Password</label>\n          <input [disabled]=\"working\" type=\"password\" #password class=\"form-control\" id=\"password\" placeholder=\"Password\">\n          <div *ngIf=\"passwordError\" class=\"alert alert-danger\" role=\"alert\"><b>Error:</b> {{passwordError}}</div>\n        </div>\n        <a [class.disabled]=\"working\" class=\"btn btn-default\" (click)=\"toggleLogin()\">{{showLogin? \"Sign Up\" : \"Login\"}}</a>\n        <a [class.disabled]=\"working\" class=\"btn btn-success pull-right\" (click)=\"submitForm()\">{{showLogin? \"Login\" : \"Sign Up\"}}</a>\n        <div class=\"clearfix\"></div>\n      </form>\n    </div>\n  </div>\n</div>\n"
+module.exports = "<div class=\"main\">\n  <div class=\"wrapper\">\n    <div class=\"well\">\n      <spinner *ngIf=\"working\" [size]=\"96\"></spinner>\n      <h2>{{showLogin? \"Login\" : \"Sign Up\"}}</h2>\n      <form role=\"form\">\n        <div class=\"form-group\">\n          <label for=\"username\">Username</label>\n          <input [disabled]=\"working\" type=\"text\" #username class=\"form-control\" id=\"username\" placeholder=\"Username\">\n          <div *ngIf=\"usernameError\" class=\"alert alert-danger\" role=\"alert\"><b>Error:</b> {{usernameError}}</div>\n        </div>\n        <div class=\"form-group\">\n          <label for=\"password\">Password</label>\n          <input [disabled]=\"working\" type=\"password\" #password class=\"form-control\" id=\"password\" placeholder=\"Password\">\n          <div *ngIf=\"passwordError\" class=\"alert alert-danger\" role=\"alert\"><b>Error:</b> {{passwordError}}</div>\n        </div>\n        <a [class.disabled]=\"working\" class=\"btn btn-default\" (click)=\"toggleLogin()\">{{showLogin? \"Sign Up\" : \"Login\"}}</a>\n        <a [class.disabled]=\"working\" class=\"btn btn-success pull-right\" (click)=\"submitForm($event)\">{{showLogin? \"Login\" : \"Sign Up\"}}</a>\n        <div class=\"clearfix\"></div>\n      </form>\n    </div>\n  </div>\n</div>\n"
 
 /***/ }),
 
